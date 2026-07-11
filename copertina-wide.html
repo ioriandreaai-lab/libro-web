@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+  <meta charset="UTF-8">
+  <title>Tre Uomini e un Cabrales — Copertina</title>
+  <link href="https://fonts.googleapis.com/css2?family=Anton&family=EB+Garamond:ital,wght@0,400;0,500;1,400&display=swap" rel="stylesheet">
+  <style>
+    @page { size: 471.3mm 279.04mm; margin: 0; }
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      width: 471.3mm;
+      height: 279.04mm;
+      display: flex;
+      overflow: hidden;
+      font-family: 'EB Garamond', serif;
+    }
+
+    /* ── RETRO ── 7.76mm bleed sx + 209.545mm trim */
+    .back {
+      width: 217.305mm;
+      height: 279.04mm;
+      background: #FFFFFF;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      /* left+top+bottom: bleed(7.76)+safe(6.35)=14.11mm | right: safe only (lato dorso, no bleed) */
+      padding: 14.11mm 18mm 14.11mm 18mm;
+    }
+
+    .cast-top {
+      font-size: 8.5pt;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: rgba(0,0,0,0.38);
+      margin-bottom: 7mm;
+    }
+
+    .tagline {
+      font-family: 'Anton', sans-serif;
+      font-style: italic;
+      font-size: 32pt;
+      line-height: 1.05;
+      color: #F5A623;
+      margin-bottom: 1mm;
+    }
+
+    .rule {
+      height: 0.35mm;
+      background: #F5A623;
+      margin: 4mm 0;
+    }
+
+    .body-text {
+      font-size: 15pt;
+      line-height: 1.65;
+      color: #0D0D0D;
+    }
+    .body-text p + p { margin-top: 2.5mm; }
+    .body-text em { color: #F5A623; font-style: italic; }
+
+    .credits {
+      font-size: 8.5pt;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      color: rgba(0,0,0,0.38);
+      margin-top: 2mm;
+    }
+
+    /* ── DORSO ── 36.69mm */
+    .spine {
+      flex-shrink: 0;
+      width: 36.69mm;
+      height: 279.04mm;
+      background: #F5A623;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 4mm;
+    }
+
+    .spine-title {
+      font-family: 'Anton', sans-serif;
+      font-style: italic;
+      color: #FFFFFF;
+      font-size: 15pt;
+      writing-mode: vertical-rl;
+      transform: rotate(180deg);
+      letter-spacing: 0.14em;
+      white-space: nowrap;
+    }
+
+    .spine-year {
+      font-family: 'EB Garamond', serif;
+      font-style: italic;
+      color: rgba(255,255,255,0.5);
+      font-size: 7.5pt;
+      writing-mode: vertical-rl;
+      transform: rotate(180deg);
+      letter-spacing: 0.1em;
+    }
+
+    /* ── FRONTE ── 209.545mm trim + 7.76mm bleed dx */
+    .front {
+      width: 217.305mm;
+      height: 279.04mm;
+      background: #FFFFFF;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .front img {
+      position: absolute;
+      inset: -1px;
+      width: calc(100% + 2px);
+      height: calc(100% + 2px);
+      object-fit: contain;
+      object-position: center center;
+      background: #FFFFFF;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- ── RETRO COPERTINA ── -->
+  <div class="back">
+    <div class="cast-top">Norman &nbsp;·&nbsp; Friki &nbsp;·&nbsp; Juan</div>
+
+    <div class="tagline">Mezza Europa<br>per un formaggio.</div>
+    <div class="rule"></div>
+
+    <div class="body-text">
+      <p>Tre amici. Un Cabrales delle Asturie scelto come bomboniera per duecento invitati. Sette giorni per attraversare mezza Europa e arrivare in tempo al Royal Wedding in Toscana.</p>
+      <p><em>Cosa poteva andare storto? Quasi tutto.</em></p>
+      <p>La vera storia di come Juan, Norman e Friki non sono riusciti a fare il tragitto più semplice del mondo: Autogrill fuori controllo, un matrimonio sconosciuto in Germania, ventidue ore di Flixbus per la Scozia e un club di Parigi dove <em>"un'ora"</em> è durata tre giorni.</p>
+      <p>Alla fine sono arrivati. In ritardo, con un vetro rotto e un Cabrales che la Guardia Civil non dimenticherà tanto facilmente.</p>
+      <p><em>Perché in fondo, l'unica cosa più rara di duecento porzioni di Cabrales... è un'amicizia come la loro.</em></p>
+    </div>
+
+    <div class="rule"></div>
+    <div class="credits">Riccardo Orlandi &nbsp;·&nbsp; Andrea Iori</div>
+  </div>
+
+  <!-- ── DORSO ── -->
+  <div class="spine">
+    <div class="spine-title">Tre Uomini e un Cabrales</div>
+    <div class="spine-year">2026</div>
+  </div>
+
+  <!-- ── FRONTE COPERTINA ── -->
+  <div class="front">
+    <img src="copertina-illustrata.png">
+  </div>
+
+</body>
+</html>
