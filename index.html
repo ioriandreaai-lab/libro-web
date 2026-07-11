@@ -1,0 +1,1434 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Tre Uomini e un Cabrales</title>
+  <link href="https://fonts.googleapis.com/css2?family=Anton&family=EB+Garamond:ital,wght@0,400;0,500;1,400&display=swap" rel="stylesheet">
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --ivory:  #FFFFFF;
+      --ivory2: #F5F5F2;
+      --cream:  #EAEAE4;
+      --dark:   #0D0D0D;
+      --dark2:  #111111;
+      --text:   #0C0C0C;
+      --muted:  #6A6A6A;
+      --rule:   #C0C0C0;
+      --red:    #B82020;
+      --gold:   #9A7428;
+    }
+
+    body {
+      background: #0A0A0A;
+      padding: 48px 20px 80px;
+      font-family: 'EB Garamond', serif;
+    }
+
+    .book {
+      max-width: 1200px;
+      margin: 0 auto;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      column-gap: 48px;
+      row-gap: 6px;
+      align-items: start;
+    }
+
+    /* ── PAGE ── */
+    .pg {
+      width: 100%;
+      aspect-ratio: 203/254;
+      position: relative;
+      overflow: hidden;
+      background: var(--ivory);
+      box-shadow: 0 10px 44px rgba(0,0,0,0.65);
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      padding: 14% 12%;
+    }
+    .pg.dark   { background: #F5A623; }
+    .pg.ivory2 { background: var(--ivory2); }
+    .pg.cream  { background: var(--cream); }
+    .pg.photo  { padding: 0; }
+    .pg.top    { justify-content: flex-start; padding-top: 14%; }
+    .pg.bottom { justify-content: flex-end;   padding-bottom: 12%; }
+    .pg.center { align-items: center; text-align: center; }
+    .pg.cover  {
+      background: #0F0904;
+      justify-content: flex-end;
+      align-items: flex-start;
+      padding: 0;
+      overflow: hidden;
+    }
+
+    /* ── RUNNING HEAD ── */
+    .rh {
+      position: absolute;
+      top: 7%;
+      left: 15%; right: 15%;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      border-bottom: 0.5px solid var(--rule);
+      padding-bottom: 5px;
+    }
+    .rh span {
+      font-family: 'EB Garamond', serif;
+      font-size: clamp(6px, 1vw, 8px);
+      letter-spacing: 0.22em;
+      text-transform: uppercase;
+      color: var(--muted);
+    }
+    .pg.dark .rh { border-bottom-color: rgba(139,26,26,0.3); }
+    .pg.dark .rh span { color: rgba(139,26,26,0.5); }
+    .pg.cream .rh { border-bottom-color: #B0B0B0; }
+    .pg.cream .rh span { color: #888888; }
+
+    /* ── PAGE NUMBER ── */
+    .pn {
+      position: absolute;
+      bottom: 5%;
+      font-family: 'EB Garamond', serif;
+      font-size: clamp(8px, 1.4vw, 10px);
+      color: var(--muted);
+      font-style: italic;
+    }
+    .pn.l { left: 15%; }
+    .pn.r { right: 15%; }
+    .pg.dark .pn  { color: rgba(139,26,26,0.4); }
+    .pg.cream .pn { color: #888888; }
+    .pg.photo .pn { color: rgba(255,255,255,0.35); }
+
+    /* ── BODY TEXT ── */
+    .narr {
+      font-family: 'EB Garamond', serif;
+      font-size: clamp(13px, 2.5vw, 17px);
+      line-height: 1.9;
+      color: var(--text);
+    }
+    .narr p + p { margin-top: 0.75em; }
+    .narr em { font-style: italic; }
+    .pg.dark .narr { color: #FFFFFF; }
+
+    /* ── DIALOGUE ── */
+    .dlg {
+      font-family: 'EB Garamond', serif;
+      font-size: clamp(13px, 2.5vw, 17px);
+      line-height: 1.9;
+      color: var(--text);
+      margin: 16px 0;
+      padding-left: 4%;
+    }
+    .dlg p { margin: 0; }
+    .dlg .sp {
+      font-family: 'EB Garamond', serif;
+      font-size: 0.6em;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: #F5A623;
+    }
+    .pg.dark .dlg { color: #FFFFFF; }
+    .pg.dark .dlg .sp { color: rgba(255,255,255,0.6); }
+
+    /* ── RULE ── */
+    .rule {
+      width: 24px;
+      height: 1px;
+      background: var(--rule);
+      margin: 18px 0;
+    }
+    .pg.dark .rule { background: rgba(139,26,26,0.35); }
+
+    /* ── PULL QUOTE ── */
+    .pull {
+      font-family: 'EB Garamond', serif;
+      font-style: italic;
+      font-size: clamp(15px, 3.2vw, 24px);
+      line-height: 1.35;
+      color: var(--text);
+      margin: 20px 0;
+    }
+    .pg.dark .pull { color: #FFFFFF; }
+
+    /* ── BIG QUOTE ── */
+    .bq {
+      font-family: 'Anton', sans-serif;
+      font-style: italic;
+      font-size: clamp(28px, 6vw, 52px);
+      line-height: 1.1;
+      color: #FFFFFF;
+    }
+    .bq-sub {
+      font-family: 'EB Garamond', serif;
+      font-size: clamp(6px, 1vw, 8px);
+      letter-spacing: 0.24em;
+      text-transform: uppercase;
+      color: #444444;
+      margin-top: 22px;
+    }
+
+    /* ── CHAPTER OPENER ── */
+    .ch-eyebrow {
+      font-family: 'EB Garamond', serif;
+      font-size: clamp(7px, 1.2vw, 9px);
+      letter-spacing: 0.28em;
+      text-transform: uppercase;
+      color: var(--red);
+      margin-bottom: 20px;
+    }
+    .ch-title {
+      font-family: 'Anton', sans-serif;
+      font-style: italic;
+      font-weight: 400;
+      font-size: clamp(28px, 6.5vw, 52px);
+      line-height: 1.05;
+      color: #F5A623;
+    }
+    .ch-deck {
+      font-family: 'EB Garamond', serif;
+      font-size: clamp(11px, 2.1vw, 14px);
+      font-style: italic;
+      color: #3A3A3A;
+      line-height: 1.65;
+      margin-top: 18px;
+    }
+
+    .pg.cream .ch-title { color: #F5A623; }
+    .pg.cream .ch-deck  { color: var(--muted); }
+    .pg.cream .ch-eyebrow { color: var(--red); }
+    .pg.cream .rule { background: #B0B0B0; }
+    .pg.dark .ch-title { color: #FFFFFF; }
+
+    /* ── INLINE SECTION LABEL ── */
+    .sh {
+      font-family: 'EB Garamond', serif;
+      font-size: clamp(6px, 1vw, 8px);
+      letter-spacing: 0.26em;
+      text-transform: uppercase;
+      color: var(--muted);
+      margin-bottom: 16px;
+    }
+    .pg.dark .sh { color: rgba(139,26,26,0.55); }
+
+    /* ── HEADLINE (within text page) ── */
+    .hl {
+      font-family: 'Anton', sans-serif;
+      font-style: italic;
+      font-weight: 400;
+      font-size: clamp(17px, 3.8vw, 28px);
+      line-height: 1.15;
+      color: var(--text);
+      margin-bottom: 14px;
+    }
+
+    /* ── CAST OVERLAY ── */
+    .cast-ov {
+      position: absolute;
+      bottom: 0; left: 0; right: 0;
+      padding: 10% 15% 8%;
+      background: linear-gradient(transparent, rgba(10,5,2,0.95));
+    }
+    .cast-role {
+      font-family: 'EB Garamond', serif;
+      font-size: clamp(7px, 1.2vw, 9px);
+      letter-spacing: 0.36em;
+      text-transform: uppercase;
+      color: var(--gold);
+      margin-bottom: 8px;
+    }
+    .cast-name {
+      font-family: 'Anton', sans-serif;
+      font-style: italic;
+      font-weight: 400;
+      font-size: clamp(30px, 7.5vw, 58px);
+      color: #F5A623;
+      line-height: 0.95;
+      margin-bottom: 10px;
+    }
+    .cast-desc {
+      font-family: 'EB Garamond', serif;
+      font-size: clamp(10px, 2vw, 13px);
+      font-style: italic;
+      color: rgba(210,210,210,0.75);
+      line-height: 1.65;
+    }
+
+    /* ── PHOTO CAPTION ── */
+    .photo-cap {
+      position: absolute;
+      bottom: 0; left: 0; right: 0;
+      padding: 7% 10%;
+      background: linear-gradient(transparent, rgba(10,5,2,0.72));
+    }
+    .photo-cap-label {
+      font-family: 'EB Garamond', serif;
+      font-size: clamp(6px, 1vw, 8px);
+      letter-spacing: 0.22em;
+      text-transform: uppercase;
+      color: rgba(255,255,255,0.4);
+      margin-bottom: 5px;
+    }
+    .photo-cap-text {
+      font-family: 'EB Garamond', serif;
+      font-size: clamp(9px, 1.8vw, 12px);
+      font-style: italic;
+      color: rgba(255,255,255,0.6);
+      line-height: 1.5;
+    }
+
+    /* ── COVER ELEMENTS ── */
+    .cov-bg-num {
+      position: absolute;
+      top: -8%;
+      right: -4%;
+      font-family: 'Anton', sans-serif;
+      font-size: clamp(280px, 58vw, 480px);
+      line-height: 1;
+      color: rgba(255,255,255,0.025);
+      letter-spacing: -0.04em;
+      user-select: none;
+      pointer-events: none;
+    }
+    .cov-bar {
+      position: absolute;
+      top: 0; left: 0;
+      width: 4px;
+      height: 100%;
+      background: #B82020;
+    }
+    .cov-inner {
+      position: relative;
+      width: 100%;
+      padding: 10% 9% 6% 11%;
+      display: flex;
+      flex-direction: column;
+      justify-content: flex-end;
+      flex: 1;
+    }
+    .cov-top {
+      position: absolute;
+      top: 9%;
+      left: 11%; right: 9%;
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+    }
+    .cov-cast {
+      font-family: 'EB Garamond', serif;
+      font-size: clamp(5.5px, 1vw, 7.5px);
+      letter-spacing: 0.38em;
+      text-transform: uppercase;
+      color: #C8A050;
+    }
+    .cov-year {
+      font-family: 'EB Garamond', serif;
+      font-size: clamp(5.5px, 1vw, 7.5px);
+      letter-spacing: 0.38em;
+      color: rgba(200,160,80,0.45);
+    }
+    .cov-pre {
+      font-family: 'EB Garamond', serif;
+      font-size: clamp(8px, 1.4vw, 11px);
+      letter-spacing: 0.42em;
+      text-transform: uppercase;
+      color: #B82020;
+      margin-bottom: 6px;
+    }
+    .cov-title {
+      font-family: 'Anton', sans-serif;
+      font-style: italic;
+      font-size: clamp(68px, 14.5vw, 118px);
+      line-height: 0.85;
+      color: #F2E8D4;
+      letter-spacing: 0.02em;
+      margin-bottom: 0;
+    }
+    .cov-rule {
+      width: 36px;
+      height: 1.5px;
+      background: #B82020;
+      margin: 18px 0 16px;
+    }
+    .cov-sub {
+      font-family: 'EB Garamond', serif;
+      font-size: clamp(10px, 1.9vw, 13px);
+      font-style: italic;
+      color: #777777;
+      line-height: 1.75;
+    }
+
+    /* ── CAST TEXT PAGE ── */
+    .pg.cast-text {
+      justify-content: center;
+      align-items: flex-start;
+      padding: 14% 17%;
+    }
+    .ct-role {
+      font-family: 'EB Garamond', serif;
+      font-size: clamp(7px, 1.2vw, 9px);
+      letter-spacing: 0.44em;
+      text-transform: uppercase;
+      color: var(--gold);
+      margin-bottom: 14px;
+    }
+    .ct-name {
+      font-family: 'Anton', sans-serif;
+      font-style: italic;
+      font-weight: 400;
+      font-size: clamp(52px, 12vw, 90px);
+      color: #F5A623;
+      line-height: 0.88;
+      margin-bottom: 22px;
+    }
+    .ct-rule {
+      width: 38px;
+      height: 1px;
+      background: var(--rule);
+      margin-bottom: 22px;
+    }
+    .ct-bio {
+      font-family: 'EB Garamond', serif;
+      font-size: clamp(12px, 2.3vw, 15.5px);
+      font-style: italic;
+      color: var(--muted);
+      line-height: 1.8;
+    }
+
+    /* ── DESIGN: ORNAMENTO RULE CON PUNTO CENTRALE ── */
+    .rule-orn {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      margin: 20px 0;
+    }
+    .rule-orn::before, .rule-orn::after {
+      content: '';
+      flex: 1;
+      height: 1px;
+      background: var(--rule);
+    }
+    .rule-orn::before { max-width: 24px; }
+    .rule-orn::after  { max-width: 24px; }
+    .rule-orn span {
+      display: block;
+      width: 4px;
+      height: 4px;
+      background: var(--rule);
+      transform: rotate(45deg);
+    }
+    .pg.dark .rule-orn::before, .pg.dark .rule-orn::after { background: rgba(139,26,26,0.35); }
+    .pg.dark .rule-orn span { background: rgba(139,26,26,0.35); }
+
+    /* ── DESIGN: DROP CAP prima pagina di ogni capitolo ── */
+    .pg.dark.bottom + .pg .narr:first-of-type > p:first-child::first-letter,
+    .pg.cream.bottom + .pg .narr:first-of-type > p:first-child::first-letter {
+      float: left;
+      font-family: 'Anton', sans-serif;
+      font-style: italic;
+      font-size: clamp(46px, 9.5vw, 72px);
+      font-weight: 400;
+      line-height: 0.80;
+      padding-right: 5px;
+      padding-top: 2px;
+      color: #F5A623;
+    }
+
+    /* ── PHOTO PLACEHOLDER ── */
+    .pg.ph {
+      background: #DDD8CE;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 0;
+      padding: 14% 15%;
+    }
+    .ph-cross {
+      width: 48px;
+      height: 48px;
+      position: relative;
+      margin-bottom: 22px;
+      opacity: 0.4;
+    }
+    .ph-cross::before, .ph-cross::after {
+      content: '';
+      position: absolute;
+      background: #5A4A38;
+    }
+    .ph-cross::before { width: 1px; height: 100%; left: 50%; top: 0; }
+    .ph-cross::after  { height: 1px; width: 100%; top: 50%; left: 0; }
+    .ph-label {
+      font-family: 'Space Mono', monospace;
+      font-size: clamp(5px, 0.9vw, 6.5px);
+      letter-spacing: 0.32em;
+      text-transform: uppercase;
+      color: #5A4A38;
+      opacity: 0.6;
+      margin-bottom: 14px;
+    }
+    .ph-desc {
+      font-family: 'EB Garamond', serif;
+      font-size: clamp(10px, 2vw, 13px);
+      font-style: italic;
+      color: #5A4A38;
+      opacity: 0.75;
+      text-align: center;
+      line-height: 1.7;
+      max-width: 80%;
+    }
+
+    /* ── PHOTO CAPTION (on facing text page) ── */
+    .pg-caption {
+      margin-top: auto;
+      padding-top: 11px;
+      border-top: 1px solid var(--rule);
+      font-family: 'Space Mono', monospace;
+      font-size: clamp(5.5px, 1vw, 7px);
+      letter-spacing: 0.24em;
+      text-transform: uppercase;
+      color: var(--muted);
+      line-height: 1.7;
+    }
+
+    /* ── INLINE PHOTO INSET (within text page) ── */
+    .pg-photo-inset {
+      margin: 14px auto 8px;
+      width: 58%;
+      aspect-ratio: 1 / 1;
+      overflow: hidden;
+      flex-shrink: 0;
+      align-self: center;
+    }
+    .pg-photo-inset img {
+      width: 100%;
+      height: 100%;
+      display: block;
+      object-fit: cover;
+      object-position: center;
+    }
+
+    /* ── EMOTIONAL / FINALE ── */
+    .emot {
+      font-family: 'EB Garamond', serif;
+      font-size: clamp(12px, 2.4vw, 16px);
+      line-height: 2.1;
+      color: var(--muted);
+      text-align: center;
+    }
+    .pg.dark .emot { color: #FFFFFF; }
+
+    /* ── PRINT ── */
+    @page { size: 203mm 254mm; margin: 0; }
+
+    @media print {
+      *, *::before, *::after {
+        -webkit-print-color-adjust: exact !important;
+        print-color-adjust: exact !important;
+        color-adjust: exact !important;
+      }
+      body { background: #fff !important; padding: 0 !important; margin: 0 !important; }
+      .book { max-width: none !important; width: 203mm !important; gap: 0 !important; margin: 0 !important; display: flex !important; flex-direction: column !important; }
+      [style*="visibility:hidden"] { display: none !important; }
+      .pg { width: 203mm !important; height: 254mm !important; aspect-ratio: unset !important; box-shadow: none !important; break-after: page !important; page-break-after: always !important; margin: 0 !important; flex-shrink: 0 !important; }
+      .pg:last-child { break-after: auto !important; page-break-after: auto !important; }
+
+      .narr       { font-size: 10.5pt !important; line-height: 1.85 !important; }
+      .narr p + p { margin-top: 0.65em !important; }
+      .dlg        { font-size: 10.5pt !important; line-height: 1.85 !important; margin: 12pt 0 !important; }
+      .dlg .sp    { font-size: 5.5pt !important; }
+      .pull       { font-size: 15pt !important; margin: 14pt 0 !important; }
+      .bq         { font-size: 26pt !important; }
+      .bq-sub     { font-size: 5.5pt !important; margin-top: 16pt !important; }
+      .ch-eyebrow { font-size: 5.5pt !important; margin-bottom: 14pt !important; }
+      .ch-title   { font-size: 32pt !important; }
+      .ch-deck    { font-size: 9pt !important; margin-top: 14pt !important; }
+      .sh         { font-size: 5.5pt !important; margin-bottom: 12pt !important; }
+      .hl         { font-size: 17pt !important; margin-bottom: 10pt !important; }
+      .rh span    { font-size: 5pt !important; }
+      .pn         { font-size: 8pt !important; }
+      .cast-role  { font-size: 6pt !important; }
+      .cast-name  { font-size: 36pt !important; }
+      .cast-desc  { font-size: 8.5pt !important; }
+      .ct-role    { font-size: 6pt !important; }
+      .ct-name    { font-size: 58pt !important; line-height: 0.88 !important; }
+      .ct-bio     { font-size: 9.5pt !important; line-height: 1.75 !important; }
+      .pg.dark.bottom + .pg .narr:first-of-type > p:first-child::first-letter,
+      .pg.cream.bottom + .pg .narr:first-of-type > p:first-child::first-letter { font-size: 46pt !important; }
+      .photo-cap-label { font-size: 5pt !important; }
+      .photo-cap-text  { font-size: 8pt !important; }
+      .cov-cast   { font-size: 6pt !important; }
+      .cov-title  { font-size: 44pt !important; }
+      .cov-sub    { font-size: 9pt !important; }
+      .cov-year   { font-size: 5.5pt !important; margin-top: 16pt !important; }
+      .emot       { font-size: 10pt !important; line-height: 2 !important; }
+      .rule       { margin: 14pt 0 !important; }
+    }
+  </style>
+</head>
+<body>
+<div class="book">
+
+  <!-- pagina bianca davanti copertina -->
+  <div class="pg" style="visibility:hidden;"></div>
+
+  <!-- ══════════════════════════════ COPERTINA ══════════════════════════════ -->
+  <div class="pg cover" style="background:#FFFFFF;padding:0;">
+    <img src="copertina-illustrata.png" style="position:absolute;top:0;left:0;width:100%;height:100%;object-fit:contain;object-position:center center;background:#FFFFFF;">
+  </div>
+
+  <!-- P3: firme e dediche -->
+  <div class="pg" style="background:#FFFFFF;"></div>
+
+  <!-- P3: Occhiello (half-title) -->
+  <div class="pg center" style="background:#FFFFFF;">
+    <div style="font-family:'Anton',sans-serif;font-style:italic;font-size:clamp(18px,4vw,32px);color:var(--text);line-height:1.1;text-align:center;">Tre Uomini<br>e un Cabrales</div>
+  </div>
+
+  <!-- Frontespizio -->
+  <div class="pg center" style="background:#FFFFFF;">
+    <div style="font-family:'EB Garamond',serif;font-size:clamp(6px,1vw,8px);letter-spacing:0.36em;text-transform:uppercase;color:var(--muted);margin-bottom:20px;">Norman · Friki · Juan</div>
+    <div class="ch-title" style="text-align:center;font-size:clamp(32px,7vw,56px);">Tre Uomini<br>e un Cabrales</div>
+    <div style="width:36px;height:1.5px;background:#F5A623;margin:18px auto;"></div>
+    <div style="font-family:'EB Garamond',serif;font-size:clamp(10px,2vw,14px);font-style:italic;color:var(--muted);text-align:center;line-height:1.7;">Da Correggio alla Toscana.<br>Con qualche deviazione.</div>
+    <div style="margin-top:40px;font-family:'EB Garamond',serif;font-size:clamp(6px,1vw,8px);letter-spacing:0.3em;text-transform:uppercase;color:var(--muted);text-align:center;">Riccardo Orlandi &nbsp;·&nbsp; Andrea Iori<br><span style="opacity:0.5;">2026</span></div>
+  </div>
+
+  <!-- Foto Cabrales -->
+  <div class="pg photo">
+    <img src="foto-cabrales.jpeg" style="position:absolute;top:0;left:0;width:100%;height:100%;object-fit:cover;object-position:center center;">
+  </div>
+
+  <!-- ══════════════════════════════ APERTURA ══════════════════════════════ -->
+  <div class="pg dark center">
+    <div class="bq">"Ora sto bene.<br>Prima no."</div>
+  </div>
+
+  <div class="pg photo">
+    <img src="foto-ora-sto-bene.jpeg" style="position:absolute;top:0;left:0;width:100%;height:100%;object-fit:cover;object-position:center 30%;">
+  </div>
+
+  <!-- ══════════════════════════════ CAST ══════════════════════════════ -->
+  <div class="pg cast-text">
+    <div class="ct-role">Lo Sposo</div>
+    <div class="ct-name">Juan</div>
+    <div class="ct-rule"></div>
+    <div class="ct-bio">Bello, benestante, profumato. Spesso scambiato per il Sig. Juan Beroni per via del baffo. Con i suoi soldi e la mia testa, potremmo tranquillamente bruciare Correggio. <em>cit.</em></div>
+  </div>
+
+  <div class="pg photo">
+    <img src="foto-jon.jpeg" style="position:absolute;top:0;left:0;width:100%;height:100%;object-fit:cover;object-position:center 20%;">
+  </div>
+
+  <div class="pg cast-text">
+    <div class="ct-role">Il Testimone</div>
+    <div class="ct-name">Norman</div>
+    <div class="ct-rule"></div>
+    <div class="ct-bio">Daddy, sportivo e puntuale. Chiaramente il più saggio dei 3. Qualche problema di pipì nel letto qua e là ma nulla di serio. La leggenda narra che una volta sia stato ad aspettare Friki sotto casa per 48 ore senza bere né mangiare.</div>
+  </div>
+
+  <div class="pg photo">
+    <img src="foto-p7.jpeg" style="position:absolute;top:0;left:0;width:100%;height:100%;object-fit:cover;object-position:center center;">
+  </div>
+
+  <div class="pg cast-text">
+    <div class="ct-role">Il Testimone</div>
+    <div class="ct-name">Friki</div>
+    <div class="ct-rule"></div>
+    <div class="ct-bio">Una vita da Gourmet, a recuperar filoni. Panificatore seriale e Gran Maestro di grani antichi. Riesce sempre a convincerti che arriverà puntuale, ma sappiamo tutti poi come va a finire. Soffre il turismo di massa più delle zanzare ad agosto in riva al fiume Po.</div>
+  </div>
+
+  <div class="pg photo">
+    <img src="foto-friki.jpeg" style="position:absolute;top:0;left:0;width:100%;height:100%;object-fit:cover;object-position:center 25%;">
+  </div>
+
+  <!-- ══════════════════════════════ CAP 1 ══════════════════════════════ -->
+  <div class="pg cream bottom">
+    <div class="ch-eyebrow">Capitolo I &nbsp;·&nbsp; Correggio &nbsp;·&nbsp; Ore 08:23</div>
+    <div class="ch-title">Settantatré<br>minuti dopo<br>il previsto.</div>
+  </div>
+
+  <div class="pg top">
+    <div class="rh"><span>Tre Uomini e un Cabrales</span><span>I · Correggio</span></div>
+    <div class="narr" style="margin-top:10%;">
+      <p>Norman aveva detto le sette. Friki aveva detto <em>"Claro, ci sono."</em></p>
+      <p>Alle sette e un quarto, nessuna risposta. Alle sette e mezza: <em>"parto tra dieci minuti."</em></p>
+      <p>Alle otto e venti Friki era arrivato con due borse, una valigia di pane appena sfornato e l'aria di chi ha fatto del suo meglio.</p>
+    </div>
+    <div class="dlg">
+      <p><span class="sp">Norman</span> Friki. Sono le otto e venti.</p>
+      <p><span class="sp">Friki</span> Lo so. Però ho trovato una cantina che fa un vino naturale pazzesco a San Polo D'Enza. Quaranta minuti. Un vino speciale per il matrimonio.</p>
+      <p><span class="sp">Norman</span> Friki.</p>
+      <p><span class="sp">Friki</span> Cinquanta al massimo. E ho il pane caldo.</p>
+      <p><span class="sp">Juan</span> Freaky Riki. Sali in macchina.</p>
+    </div>
+    <div class="pn r">11</div>
+  </div>
+
+  <div class="pg top">
+    <div class="rh"><span>Tre Uomini e un Cabrales</span><span>I · Correggio</span></div>
+    <div class="narr" style="margin-top:10%;">
+      <p>Juan era arrivato puntuale alle sette. Seduto sul cofano, abito in custodia, giradischi nel bagagliaio.</p>
+    </div>
+    <div class="dlg">
+      <p><span class="sp">Norman</span> Non dire niente.</p>
+      <p><span class="sp">Juan</span> Non dico niente.</p>
+      <p><span class="sp">Friki</span> Vuoi del pane gluten freak?</p>
+      <p><span class="sp">Juan</span> mmm.</p>
+    </div>
+    <div class="rule"></div>
+    <div class="narr">
+      <p>Partirono alle otto e ventisei. Settantatré minuti dopo il previsto. Come al solito. Come sempre.</p>
+      <p>Il piano era semplice: macchina, autostrada, dritti fino in Toscana. Juan alla guida, Norman al navigatore, Friki dietro con il Cabrales — ancora un'idea vaga — in testa. Il piano sarebbe durato esattamente fino al primo cartello <em>Autogrill 500 metri.</em></p>
+    </div>
+    <div class="pn l">12</div>
+  </div>
+
+  <!-- Intermezzo: Il Cabrales -->
+  <div class="pg dark center">
+    <div class="sh" style="margin-bottom:24px;">Prima di partire &nbsp;·&nbsp; Una cosa importante</div>
+    <div class="pull" style="text-align:center;font-size:clamp(14px,3vw,22px);">C'era un oggetto<br>da recuperare.</div>
+    <div class="narr" style="text-align:center;margin-top:24px;">
+      <p>Tre anni prima, a cena, Juan aveva detto una cosa — per ridere.</p>
+    </div>
+    <div style="margin-top:20px;margin-bottom:20px;">
+      <div class="pull" style="text-align:center;font-size:clamp(13px,2.6vw,18px);color:#FFFFFF;">"Se un giorno mi sposo, voglio<br>un Cabrales originale al tavolo."</div>
+    </div>
+    <div class="narr" style="text-align:center;">
+      <p>Friki aveva annuito.</p>
+      <p style="margin-top:0.5em;">Nessuno ci aveva pensato più.</p>
+      <p style="margin-top:0.5em;">Tranne Friki. E Ludovica.</p>
+    </div>
+  </div>
+
+  <div class="pg top">
+    <div class="rh"><span>Tre Uomini e un Cabrales</span><span>I · Correggio</span></div>
+    <div class="narr" style="margin-top:10%;">
+      <p>Il Cabrales è un formaggio stagionato nelle grotte asturiane. Nelle Asturie. In Spagna. A quasi duemila chilometri da Correggio. Minimo sei mesi di stagionatura. Il meglio: dieci. Si trova avvolto nella carta da pane, consegnato da uomini con le mani come pale.</p>
+      <p>In Italia non si trova. Quasi mai.</p>
+    </div>
+    <div class="dlg">
+      <p><span class="sp">Friki</span> Ho un contatto. Asturie. Picos de Europa. Produttore che stagiona nelle grotte. Ho prenotato il nostro tre anni fa.</p>
+      <p><span class="sp">Norman</span> Tre anni fa.</p>
+      <p><span class="sp">Friki</span> Quando Juan ha detto la cosa del Cabrales a cena.</p>
+      <p><span class="sp">Juan</span> Era una battuta.</p>
+      <p><span class="sp">Friki</span> Io l'ho presa sul serio.</p>
+    </div>
+    <div class="pn r">13</div>
+  </div>
+
+  <div class="pg photo">
+    <img src="foto-asturie.jpeg" style="position:absolute;top:0;left:0;width:100%;height:100%;object-fit:cover;object-position:center center;">
+    <div class="pn l">14</div>
+  </div>
+
+  <div class="pg top">
+    <div class="rh"><span>Tre Uomini e un Cabrales</span><span>I · Correggio</span></div>
+    <div class="narr" style="margin-top:6%;">
+      <p>Il produttore era nelle Asturie. Picos de Europa. Spagna. Non <em>tre ore da Correggio</em> — quella era la versione di Friki al telefono, con un'ottimismo geografico che aveva pochi precedenti. Nella realtà: traversata della Francia, confine spagnolo, poi strada di montagna senza segnale per due ore buone.</p>
+    </div>
+    <div class="dlg">
+      <p><span class="sp">Norman</span> Friki. La Spagna non è a tre ore da Correggio.</p>
+      <p><span class="sp">Friki</span> Dipende da come guidi.</p>
+      <p><span class="sp">Norman</span> Il matrimonio è dopodomani.</p>
+      <p><span class="sp">Friki</span> Juan ha chiesto un Cabrales al suo matrimonio.</p>
+      <p><span class="sp">Norman</span> Era una battuta!</p>
+      <p><span class="sp">Friki</span> Non per Ludovica.</p>
+    </div>
+    <div class="narr" style="margin-top:6px;">
+      <p>Silenzio in macchina. Juan abbassa il finestrino.</p>
+    </div>
+    <div class="dlg">
+      <p><span class="sp">Juan</span> Andiamo in Spagna.</p>
+    </div>
+    <div class="pn r">15</div>
+  </div>
+
+  <div class="pg" style="background:var(--ivory);position:relative;justify-content:flex-start;padding:0;">
+    <div style="position:absolute;top:0;left:0;right:0;height:45%;display:flex;align-items:center;justify-content:center;padding:6% 12%;">
+      <div class="pg-caption" style="margin:0;border-top:none;padding-top:0;text-align:center;font-size:clamp(8px,1.6vw,11px);">Norman sotto casa di Friki da 40 minuti pronto a partire con il bolide.</div>
+    </div>
+    <div style="position:absolute;bottom:0;left:0;right:0;height:55%;overflow:hidden;">
+      <img src="foto-zante-auto.jpeg" style="width:100%;height:100%;display:block;object-fit:cover;object-position:center 40%;">
+    </div>
+    <div class="pn l">16</div>
+  </div>
+
+  <!-- ══════════════════════════════ CAP 2 ══════════════════════════════ -->
+  <div class="pg cream bottom">
+    <div class="ch-eyebrow">Capitolo II &nbsp;·&nbsp; A1 · Km 84 &nbsp;·&nbsp; Ore 11:17</div>
+    <div class="ch-title">Cocktails<br>&amp; Dreams</div>
+    <div class="ch-deck">"Un drink. Solo uno però."</div>
+  </div>
+
+  <div class="pg top">
+    <div class="rh"><span>Tre Uomini e un Cabrales</span><span>II · Cocktails &amp; Dreams</span></div>
+    <div class="narr" style="margin-top:8%;">
+      <p>L'Autogrill era sulla destra. Sopra il bar interno, un cartello.</p>
+    </div>
+    <div class="pg-photo-inset" style="width:calc(100% + 30%);margin-left:-15%;margin-right:-15%;aspect-ratio:unset;height:clamp(105px,26vw,190px);align-self:auto;">
+      <img src="esterno.jpg" alt="Cocktails &amp; Dreams" style="object-position:center top;">
+    </div>
+    <div class="narr">
+      <p>Norman lo aveva letto ad alta voce. Senza pensarci. Around the World in sottofondo.</p>
+      <p><em>"Sembra di essere a Zante,"</em> aveva detto.</p>
+    </div>
+    <div class="dlg">
+      <p><span class="sp">Friki</span> Un drink.</p>
+      <p><span class="sp">Norman</span> Solo uno però.</p>
+    </div>
+    <div class="narr"><p>Juan aveva già messo la freccia.</p></div>
+    <div class="rule"></div>
+    <div class="narr">
+      <p>Fu lì, seduti all'Autogrill con i tramezzini e le birre medie, che Friki ricevette il messaggio di Ludovica.</p>
+      <p><em>"Ah, giusto per dirtelo: l'ho messo sul menù delle bomboniere. Duecento persone lo stanno aspettando."</em></p>
+      <p>Il Cabrales non era più una battuta. Era diventato un problema di Stato.</p>
+      <p>Il Cabrales poteva aspettare ancora un po'. Le Asturie non sarebbero scappate.</p>
+    </div>
+    <div class="pn r">18</div>
+  </div>
+
+  <div class="pg photo" style="position:relative;flex-direction:column;">
+    <div style="position:absolute;top:0;left:0;right:0;height:50%;overflow:hidden;">
+      <img src="foto-zante-gruppo.jpeg" style="width:100%;height:100%;display:block;object-fit:cover;object-position:center center;">
+    </div>
+    <div style="position:absolute;bottom:0;left:0;right:0;height:50%;overflow:hidden;">
+      <img src="foto-zante-notte.jpeg" style="width:100%;height:100%;display:block;object-fit:cover;object-position:center center;">
+    </div>
+    <div class="pn r" style="color:rgba(255,255,255,0.4);">19</div>
+  </div>
+
+  <div class="pg top">
+    <div class="rh"><span>Tre Uomini e un Cabrales</span><span>II · Cocktails &amp; Dreams</span></div>
+    <div class="narr" style="margin-top:10%;">
+      <p>Ore quattro e diciassette del mattino.</p>
+      <p>Juan apre gli occhi. Nel letto accanto c'è qualcuno. Un tipo. Juan è abbastanza certo che si chiami Qwabe.</p>
+      <p>In un angolo della camera c'è un cruscotto. Completo di tachimetro. Nessuno saprà mai da quale automobile provenisse. Juan non è sorpreso.</p>
+      <p>Juan guarda Qwabe. Qwabe guarda Juan.</p>
+    </div>
+    <div class="dlg">
+      <p><span class="sp">Juan</span> Caffè?</p>
+    </div>
+    <div class="narr">
+      <p>La giornata continua. Norman viene trovato su un divano con un bicchiere ancora in mano. Friki ha imparato una ricetta dal barista e sta già prendendo appunti.</p>
+      <p>Sono le undici. C'era ancora strada da fare verso la Toscana. Direi che la serata era stata fatta.</p>
+      <p>La macchina di Norman rimase ad aspettarli nel parcheggio dell'Autogrill per quattro giorni. Quando tornarono a riprenderla aveva una multa sul parabrezza e un piccione che sembrava essersene fatto casa. <em>"Tanto un volo per il Belgio costava meno di un pieno,"</em> disse qualcuno. Nessuno ricorda chi, e nessuno lo ha mai smentito.</p>
+    </div>
+    <div class="pn l">20</div>
+  </div>
+
+  <!-- ══════════════════════════════ CAP 3 ══════════════════════════════ -->
+  <div class="pg cream bottom">
+    <div class="ch-eyebrow">Capitolo III &nbsp;·&nbsp; Bologna · Aeroporto &nbsp;·&nbsp; Ore 07:00</div>
+    <div class="ch-title">Verme,<br>ho riperso<br>gli aerei.</div>
+    <div class="ch-deck">2 voli, la vermata, 2 aerei persi.</div>
+  </div>
+
+  <div class="pg top">
+    <div class="rh"><span>Tre Uomini e un Cabrales</span><span>III · Bruxelles</span></div>
+    <div class="narr" style="margin-top:10%;">
+      <p>Friki aveva avuto un'idea. Juan aveva fatto arrivare al matrimonio direttamente dall'Isola di Skye una cassa di whisky scozzesi d'annata. Ottimi whisky. Ma senza un cioccolato di qualità all'altezza, era un delitto. Il cioccolato belga era l'unico all'altezza.</p>
+      <p>Piano: volo mattina, comprare il cioccolato, volo sera. Toccata e fuga.</p>
+    </div>
+    <div class="dlg">
+      <p><span class="sp">Friki</span> Un giorno. Andata e ritorno.</p>
+      <p><span class="sp">Norman</span> Un giorno.</p>
+      <p><span class="sp">Juan</span> Prenotate. Cena stasera per festeggiare il piano.</p>
+    </div>
+    <div class="pn r">22</div>
+  </div>
+
+  <div class="pg top">
+    <div class="rh"><span>Tre Uomini e un Cabrales</span><span>III · Bruxelles</span></div>
+    <div class="narr" style="margin-top:10%;">
+      <p>La cena era andata bene. La serata era andata oltre.</p>
+      <p>A un certo punto era arrivato Nik euforico, si sposava tra tre giorni, la moglie era tedesca e il matrimonio sarebbe stato in Germania. Aveva ordinato da bere per tutti. Nik conosceva un posto. Poi un altro. Il volo era alle sette di mattina.</p>
+      <p>Alle cinque, prima di andare a dormire, erano entrati nell'unico posto ancora aperto. Menù scritto a mano su lavagna.</p>
+    </div>
+    <div class="pull" style="margin:14px 0;">La Vermata<br><span style="font-family:'EB Garamond',serif;font-size:0.5em;letter-spacing:0.12em;font-style:normal;">TONNO FRESCO · OGGI</span></div>
+    <div class="narr">
+      <p>Friki aveva smesso di respirare per un secondo preciso. Il volo era alle sette. Non lo presero.</p>
+    </div>
+    <div class="pn l">23</div>
+  </div>
+
+  <div class="pg top">
+    <div class="rh"><span>Tre Uomini e un Cabrales</span><span>III · Bruxelles</span></div>
+    <div class="narr" style="margin-top:10%;">
+      <p>Giorno dopo. Tentativo due. Taxi verso l'aeroporto.</p>
+    </div>
+    <div class="dlg">
+      <p><span class="sp">Friki</span> Quanto costa?</p>
+      <p><span class="sp">Tassista</span> Settantadue euro.</p>
+      <p><span class="sp">Norman</span> Settantadue euro.</p>
+      <p><span class="sp">Friki</span> Va bene.</p>
+    </div>
+    <div class="narr">
+      <p>Arrivati all'aeroporto, il volo era partito da trentacinque minuti. Era lì che aveva chiamato Nik.</p>
+    </div>
+    <div class="dlg">
+      <p><span class="sp">Nik</span> Venite al matrimonio. Domani. Germania.</p>
+      <p><span class="sp">Norman</span> Ci conosciamo da dodici ore.</p>
+      <p><span class="sp">Nik</span> Venite al matrimonio.</p>
+      <p><span class="sp">Friki</span> C'è ancora posto sull'aereo?</p>
+      <p><span class="sp">Nik</span> Sì.</p>
+      <p><span class="sp">Friki</span> Andiamo al matrimonio.</p>
+    </div>
+    <div class="narr">
+      <p>Il cioccolato belga non fu mai comprato. Quello che presero, invece, fu un invito a un matrimonio sconosciuto in Germania, offerto da un tale conosciuto la sera prima davanti a una Vermata di tonno fresco.</p>
+      <p>Il Cabrales, nelle Asturie, non aveva ancora idea di quanto avrebbe dovuto aspettare.</p>
+    </div>
+    <div class="narr" style="margin-top:10px;">
+      <p>Friki controllò il telefono. Un messaggio dal produttore: <em>"Vi aspettiamo quando volete, ma non fate troppo tardi — qui si va a letto presto!"</em></p>
+    </div>
+    <div class="pn r">24</div>
+  </div>
+
+
+  <!-- ══════════════════════════════ CAP 4 ══════════════════════════════ -->
+  <div class="pg cream bottom">
+    <div class="ch-eyebrow">Capitolo IV &nbsp;·&nbsp; Germania &nbsp;·&nbsp; La notte prima</div>
+    <div class="ch-title">La sposa<br>non ci<br>voleva.</div>
+    <div class="ch-deck">Aveva le sue ragioni.</div>
+  </div>
+
+  <div class="pg top">
+    <div class="rh"><span>Tre Uomini e un Cabrales</span><span>IV · Germania</span></div>
+    <div class="narr" style="margin-top:10%;">
+      <p>Erano partiti da Bologna con un bagaglio leggero, nessun piano preciso, e un invito di dodici ore prima da uno che si sposava il giorno dopo.</p>
+      <p>Il matrimonio era a casa dei genitori della sposa. Un posto grande, fuori dalla città, con l'aria di chi ha organizzato tutto da mesi e non aveva previsto tre italiani di passaggio.</p>
+      <p>Nik li aveva aspettati fuori. Era raggiante.</p>
+    </div>
+    <div class="dlg">
+      <p><span class="sp">Nik</span> Siete arrivati.</p>
+      <p><span class="sp">Norman</span> Siamo arrivati.</p>
+      <p><span class="sp">Nik</span> Perfetto. C'è birra.</p>
+      <p><span class="sp">Friki</span> Ottimo.</p>
+    </div>
+    <div class="pn r">28</div>
+  </div>
+
+  <div class="pg top">
+    <div class="rh"><span>Tre Uomini e un Cabrales</span><span>IV · Germania</span></div>
+    <div class="narr" style="margin-top:10%;">
+      <p>La sposa non li voleva. Lo aveva detto chiaramente a Nik. Nik aveva insistito. La sposa aveva ceduto con una diffidenza silenziosa ma giustificata.</p>
+      <p>Il matrimonio era a casa dei genitori di lei. Tutte le camere erano già occupate. A Norman era stata assegnata, in extremis, la camera della futura sposa.</p>
+    </div>
+    <div class="dlg">
+      <p><span class="sp">Norman</span> La camera della sposa.</p>
+      <p><span class="sp">Nik</span> È la più bella.</p>
+      <p><span class="sp">Norman</span> Lo so. Ma è la camera della sposa.</p>
+      <p><span class="sp">Nik</span> Birra?</p>
+      <p><span class="sp">Norman</span> Sì.</p>
+    </div>
+    <div class="pn l">29</div>
+  </div>
+
+  <div class="pg top">
+    <div class="rh"><span>Tre Uomini e un Cabrales</span><span>IV · Germania</span></div>
+    <div class="narr" style="margin-top:10%;">
+      <p>Norman aveva bevuto troppe birre. Molte di più di quanto avesse previsto. Alle tre di notte era andato a dormire nella camera della sposa.</p>
+      <p>Alle sei di mattina Norman si sveglia. Il soffitto non è quello della sua camera di casa. Le lenzuola di Norman raccontano una storia che lui non ha nessuna intenzione di confermare.</p>
+      <p>Nel corridoio appare la nonna della sposa. Lo guarda. Poi guarda il letto.</p>
+      <p>In quel momento, provvidenziale, compare un bambino di sei anni.</p>
+      <p>Norman lo indica. Con la fermezza assoluta di chi ha trovato la risposta giusta.</p>
+      <p>La nonna guarda il bambino. Norman è già in corridoio.</p>
+    </div>
+    <div class="pn r">30</div>
+  </div>
+
+  <div class="pg photo">
+    <img src="foto-germania.jpeg" style="position:absolute;top:0;left:0;width:100%;height:100%;object-fit:cover;object-position:center 30%;">
+    <div class="pn l">31</div>
+  </div>
+
+  <div class="pg top">
+    <div class="rh"><span>Tre Uomini e un Cabrales</span><span>IV · Germania</span></div>
+    <div class="narr" style="margin-top:8%;"></div>
+    <div class="dlg">
+      <p><span class="sp">Friki</span> Aveva funzionato.</p>
+      <p><span class="sp">Norman</span> Non so di cosa stai parlando.</p>
+      <p><span class="sp">Juan</span> L'unica cosa che mi preoccupa del mio matrimonio è che non ci sarà nessun bambino a portata di mano.</p>
+      <p><span class="sp">Norman</span> Non so di cosa stai parlando.</p>
+    </div>
+    <div class="rule"></div>
+    <div class="narr">
+      <p>La sposa non li aveva mai rivisti. Aveva avuto le sue ragioni fin dall'inizio.</p>
+    </div>
+    <div class="dlg" style="margin-top:14px;">
+      <p><span class="sp">Nik</span> <em>(al telefono, mentre sono in macchina verso l'Italia)</em> Ciao Norman. È andato tutto bene?</p>
+      <p><span class="sp">Norman</span> Tutto bene, perché?</p>
+      <p><span class="sp">Nik</span> Mah, sai, qui stiamo buttando via il materasso dove hai dormito tu. Ne sai qualcosa?</p>
+      <p><span class="sp">Norman</span> No, io? No. Anzi, so che c'era un bambino in casa — prova a chiedere a lui.</p>
+    </div>
+    <div class="narr" style="margin-top:8px;">
+      <p>Il materasso fu buttato. Il bambino non fu mai interrogato.</p>
+      <p>Tornarono in Italia con la macchina che li aspettava dov'era stata lasciata — stavolta senza multe. Un piccolo miracolo che nessuno seppe spiegarsi.</p>
+    </div>
+    <div class="pg-caption" style="margin-top:auto;">A sx: Germania, 2009 matrimonio. Norman a caccia di birre.</div>
+    <div class="pn r">32</div>
+  </div>
+
+  <!-- ══════════════════════════════ CAP 5 ══════════════════════════════ -->
+  <div class="pg cream bottom">
+    <div class="ch-eyebrow">Capitolo V &nbsp;·&nbsp; Monferrato &nbsp;·&nbsp; Cella Monte</div>
+    <div class="ch-title">Tappa:<br>Cella Monte.</div>
+    <div class="ch-deck">"Cinque minuti."</div>
+  </div>
+
+  <div class="pg top">
+    <div class="rh"><span>Tre Uomini e un Cabrales</span><span>V · Cella Monte</span></div>
+    <div class="narr" style="margin-top:10%;">
+      <p>Friki aveva proposto una strada secondaria. <em>"Più scenica. Risparmiamo trenta minuti."</em></p>
+      <p>Quaranta minuti dopo erano nel Monferrato. Vigne, colline, borgo medievale. Dal borgo usciva della musica.</p>
+      <p>Juan si era svegliato di colpo.</p>
+    </div>
+    <div class="dlg">
+      <p><span class="sp">Juan</span> Cos'è questa musica.</p>
+      <p><span class="sp">Friki</span> JazzRefound. Festival. Imperdibile.</p>
+      <p><span class="sp">Juan</span> Ferma la macchina.</p>
+      <p><span class="sp">Norman</span> Juan, il matrimon—</p>
+      <p><span class="sp">Juan</span> Cinque minuti.</p>
+    </div>
+    <div class="narr">
+      <p>Juan per la lineup. Norman per il mood. Friki per i produttori locali il sabato mattina.</p>
+    </div>
+    <div class="pn r">34</div>
+  </div>
+
+  <div class="pg top">
+    <div class="rh"><span>Tre Uomini e un Cabrales</span><span>V · Cella Monte</span></div>
+    <div class="narr" style="margin-top:10%;">
+      <p>Il sabato a pranzo Friki aveva trovato una trattoria. Menù del giorno: risotto ai funghi. Funghi del bosco, locali, freschi. Friki li aveva esaminati con l'autorità di chi se ne intende.</p>
+    </div>
+    <div class="dlg">
+      <p><span class="sp">Friki</span> Questi funghi sono speciali.</p>
+      <p><span class="sp">Norman</span> Speciali come.</p>
+      <p><span class="sp">Friki</span> Speciali. Fidati.</p>
+      <p><span class="sp">Juan</span> Tre porzioni.</p>
+    </div>
+    <div class="narr">
+      <p>Il pomeriggio era stato impegnativo. Avevano passato due ore sdraiati nel prato fuori dal borgo a guardare le nuvole con un'intensità insolita. Il festival andava avanti senza di loro. Non se ne erano accorti.</p>
+    </div>
+    <div class="pg-caption">JazzRefound · Cella Monte, Monferrato. L'armata Brancaleone si prepara per lo show.</div>
+    <div class="pn l">35</div>
+  </div>
+
+  <div class="pg photo">
+    <img src="foto-jazzrefound.jpeg" style="position:absolute;top:0;left:0;width:100%;height:100%;object-fit:cover;object-position:center 30%;">
+    <div class="pn r">36</div>
+  </div>
+
+  <!-- ══════════════════════════════ CAP 6 ══════════════════════════════ -->
+  <div class="pg cream bottom">
+    <div class="ch-eyebrow">Capitolo VI &nbsp;·&nbsp; Scozia &nbsp;·&nbsp; Da qualche parte</div>
+    <div class="ch-title">Una cialda,<br>tre uomini,<br>un loch.</div>
+    <div class="ch-deck">"È Scozia."</div>
+  </div>
+
+  <div class="pg top">
+    <div class="rh"><span>Tre Uomini e un Cabrales</span><span>VI · Scozia</span></div>
+    <div class="narr" style="margin-top:10%;">
+      <p>Nessuno dei tre aveva più nominato il Cabrales da giorni. Era ancora lì, però — come una promessa in sospeso, nelle Asturie, ad aspettare.</p>
+      <p>Era finito il DJ set di Koko. Il Giapponese li aveva fatti impazzire. Erano le undici di sera con una certa energia ancora addosso e nessuna voglia di tornare a casa.</p>
+    </div>
+    <div class="dlg">
+      <p><span class="sp">Friki</span> C'è un Flixbus per Edimburgo.</p>
+      <p><span class="sp">Norman</span> Da dove parte?</p>
+      <p><span class="sp">Friki</span> Da qui. Tra quaranta minuti.</p>
+      <p><span class="sp">Juan</span> Quante ore?</p>
+      <p><span class="sp">Friki</span> Ventidue. Con due cambi.</p>
+    </div>
+    <div class="narr"><p>Silenzio.</p></div>
+    <div class="dlg">
+      <p><span class="sp">Juan</span> Prendiamolo.</p>
+    </div>
+    <div class="pn r">38</div>
+  </div>
+
+  <div class="pg top">
+    <div class="rh"><span>Tre Uomini e un Cabrales</span><span>VI · Scozia</span></div>
+    <div class="narr" style="margin-top:10%;">
+      <p>Norman aveva prenotato online: <em>"cialda in legno, minuscola, vista eccezionale."</em> Era minuscola davvero in tre ci stavano a malapena. Ma la vista era pazzesca: il loch sotto, le colline, il cielo scozzese che cambiava ogni dieci minuti.</p>
+      <p>Juan aveva portato i suoi vinili. Come sempre.</p>
+    </div>
+    <div class="dlg">
+      <p><span class="sp">Friki</span> Sono le undici di mattina.</p>
+      <p><span class="sp">Juan</span> È Scozia.</p>
+    </div>
+    <div class="narr">
+      <p>Whisky, dischi, il loch che rifletteva le nuvole. Nel pomeriggio avevano dormito. Alle diciotto erano svegli, pronti per la serata.</p>
+    </div>
+    <div class="pg-caption" style="margin-top:auto;">Isola di Skye, 1 cialda vista pecore.</div>
+    <div class="pn l">39</div>
+  </div>
+
+  <div class="pg photo">
+    <img src="foto-cialda.jpeg" style="position:absolute;top:0;left:0;width:100%;height:100%;object-fit:cover;object-position:center 40%;">
+    <div class="pn r">40</div>
+  </div>
+
+  <div class="pg top">
+    <div class="rh"><span>Tre Uomini e un Cabrales</span><span>VI · Scozia</span></div>
+    <div class="narr" style="margin-top:10%;">
+      <p>Friki era uscito sul ballatoio della cialda senza dire niente. Era rientrato venti minuti dopo.</p>
+    </div>
+    <div class="dlg">
+      <p><span class="sp">Friki</span> Prima di uscire.</p>
+    </div>
+    <div class="narr">
+      <p>Aveva aperto la porta. Lungo la ringhiera della cialda, uno accanto all'altro, c'erano undici bicchierini di whisky. Li aveva preparati mentre gli altri dormivano.</p>
+      <p>Norman li aveva contati.</p>
+    </div>
+    <div class="dlg">
+      <p><span class="sp">Norman</span> Undici.</p>
+      <p><span class="sp">Friki</span> Siamo in tre.</p>
+      <p><span class="sp">Norman</span> Non tornano i conti.</p>
+      <p><span class="sp">Friki</span> Ho ottimizzato.</p>
+      <p><span class="sp">Juan</span> Andiamo.</p>
+    </div>
+    <div class="pg-caption">Edimburgo, Scozia, gay pride. La serata inizia così.</div>
+    <div class="pn l">41</div>
+  </div>
+
+  <div class="pg photo">
+    <img src="foto-scozia.jpeg" style="position:absolute;top:0;left:0;width:100%;height:100%;object-fit:cover;object-position:center center;">
+    <div class="pn r">42</div>
+  </div>
+
+  <div class="pg top">
+    <div class="rh"><span>Tre Uomini e un Cabrales</span><span>VI · Scozia</span></div>
+    <div class="narr" style="margin-top:10%;">
+      <p>Era così che iniziava la serata.</p>
+      <p>Finì alle undici di mattina del giorno dopo, su una spiaggia di Edimburgo. Nessuno ricorda come ci fossero arrivati. Ognuno ricorda una cosa diversa. Norman ricorda il freddo. Juan ricorda la musica. Friki ricorda di aver trovato un posto dove servivano colazione alle dieci.</p>
+    </div>
+    <div class="dlg">
+      <p><span class="sp">Friki</span> Uova, haggis e bacon. Servono fino alle dodici.</p>
+      <p><span class="sp">Norman</span> Sono le undici di mattina, siamo su una spiaggia, non so come ci siamo arrivati.</p>
+      <p><span class="sp">Friki</span> Abbiamo un'ora.</p>
+      <p><span class="sp">Juan</span> Andiamo.</p>
+    </div>
+    <div class="pg-caption">Edimburgo spiaggia, mattina dopo. Nessuno ricorda come ci fossero arrivati.</div>
+    <div class="pn l">43</div>
+  </div>
+
+  <div class="pg photo">
+    <img src="../Downloads/1688471714831.jpg" style="position:absolute;top:0;left:0;width:100%;height:100%;object-fit:cover;object-position:center 35%;">
+    <div class="pn r">44</div>
+  </div>
+
+  <div class="pg top">
+    <div class="rh"><span>Tre Uomini e un Cabrales</span><span>VI · Scozia</span></div>
+    <div class="narr" style="margin-top:10%;">
+      <p>Il volo di rientro era perso. Ovviamente. Avevano preso la coincidenza successiva via Londra l'unica opzione rimasta.</p>
+      <p>A Londra Pink aveva un concerto. La città era bloccata. La coincidenza era partita senza di loro. Norman, Friki e Juan si erano ritrovati in mezzo a centomila persone che cantavano, con i bagagli, senza hotel prenotato.</p>
+    </div>
+    <div class="dlg">
+      <p><span class="sp">Friki</span> Ho trovato un hotel.</p>
+      <p><span class="sp">Norman</span> Dove?</p>
+      <p><span class="sp">Friki</span> Zona est. Budget.</p>
+      <p><span class="sp">Norman</span> Quanto budget?</p>
+      <p><span class="sp">Friki</span> Molto budget.</p>
+      <p><span class="sp">Juan</span> È stata una delle serate migliori del viaggio.</p>
+    </div>
+    <div class="rule"></div>
+    <div class="narr">
+      <p>Dell'Edimburgo Pride e della notte in spiaggia restava solo qualche foto sfocata e nessun ricordo affidabile. Il Cabrales, però, non aveva scadenza infinita: il produttore aveva scritto di nuovo, più insistente stavolta. Fu Friki, per una volta serio, a dire: <em>"Ok, basta. Andiamo a prenderlo prima che sia troppo tardi davvero."</em></p>
+    </div>
+    <div class="pn l">45</div>
+  </div>
+
+  <div class="pg photo">
+    <img src="foto-londra.jpeg" style="position:absolute;top:0;left:0;width:100%;height:100%;object-fit:cover;object-position:center center;">
+    <div class="pn r">46</div>
+  </div>
+
+  <!-- ══════════════════════════════ CAP 7 ══════════════════════════════ -->
+  <div class="pg cream bottom">
+    <div class="ch-eyebrow">Capitolo VII &nbsp;·&nbsp; Asturie &nbsp;·&nbsp; Picos de Europa</div>
+    <div class="ch-title">Il Cabrales.</div>
+    <div class="ch-deck">Un formaggio. Dieci mesi. Grotte asturiane.<br>2 ore di viaggio in mezzo alle montagne.</div>
+  </div>
+
+  <div class="pg top">
+    <div class="rh"><span>Tre Uomini e un Cabrales</span><span>VII · Il Cabrales</span></div>
+    <div class="narr" style="margin-top:10%;">
+      <p>Picos de Europa, Asturie, Spagna del nord. La strada saliva tra le montagne. Il navigatore aveva smesso di aggiornare da venti minuti — segnale assente, nessun bar, nessun posto dove fare marcia indietro. Solo roccia, verde e la voce di Friki che leggeva ad alta voce le note del produttore come fossero le tavole della legge.</p>
+    </div>
+    <div class="dlg">
+      <p><span class="sp">Friki</span> "Stagionato nelle grotte naturali della sierra asturiana, minimo dieci mesi, crosta naturale, pasta erborinata. Avvolto a mano nella foglia di platano."</p>
+      <p><span class="sp">Norman</span> Friki, stiamo andando su una mulattiera. In Spagna. In mezzo al nulla.</p>
+      <p><span class="sp">Friki</span> "Sapore intenso, persistente, con note di grotta e muschio."</p>
+      <p><span class="sp">Norman</span> Note di grotta.</p>
+      <p><span class="sp">Juan</span> Andate avanti.</p>
+    </div>
+    <div class="pn r">48</div>
+  </div>
+
+  <div class="pg" style="background-image:url('foto-cabrales-asturie.jpeg');background-size:200% auto;background-position:0% center;background-repeat:no-repeat;background-color:#000;"></div>
+  <div class="pg" style="background-image:url('foto-cabrales-asturie.jpeg');background-size:200% auto;background-position:100% center;background-repeat:no-repeat;background-color:#000;"></div>
+
+  <div class="pg top">
+    <div class="rh"><span>Tre Uomini e un Cabrales</span><span>VII · Il Cabrales</span></div>
+    <div class="narr" style="margin-top:10%;">
+      <p>Un uomo con le mani come pale aveva aperto la porta. Aveva detto tre parole <em>"eccolo, è pronto"</em> e aveva consegnato il formaggio avvolto nella carta da pane come se stesse consegnando qualcosa di sacro.</p>
+      <p>Era il formaggio più buono che avessero mai mangiato. Valeva ogni chilometro, ogni deviazione, ogni giorno perso.</p>
+      <p>Lo avevano rimesso nel sacchetto con cura.</p>
+      <p>Il Cabrales era in macchina. Finalmente.</p>
+      <p>Con il formaggio nel bagagliaio — e nell'abitacolo, e ovunque, a giudicare dall'odore — sarebbe bastato puntare dritti verso la Toscana. Invece si fermarono <em>"un'ora"</em> in un club di Parigi chiamato Djoon. L'ora durò tre giorni. Quando ripartirono, mancavano ventiquattr'ore al matrimonio.</p>
+    </div>
+    <div class="pn l">51</div>
+  </div>
+
+  <div class="pg top">
+    <div class="rh"><span>Tre Uomini e un Cabrales</span><span>VII · Il Cabrales</span></div>
+    <div class="narr" style="margin-top:10%;">
+      <p>Il problema del Cabrales in macchina in estate è che si sente. Norman guidava. Erano le otto di mattina. Pioveva.</p>
+      <p>Norman aveva gli occhiali da sole.</p>
+    </div>
+    <div class="dlg">
+      <p><span class="sp">Friki</span> Norman. Sta piovendo.</p>
+      <p><span class="sp">Norman</span> Lo so.</p>
+      <p><span class="sp">Friki</span> Sono le otto di mattina.</p>
+      <p><span class="sp">Norman</span> Lo so.</p>
+      <p><span class="sp">Friki</span> Hai gli occhiali da sole.</p>
+      <p><span class="sp">Norman</span> Lo so.</p>
+    </div>
+    <div class="narr">
+      <p>Al semaforo, la macchina della Guardia Civil si era fermata affianco. I finestrini erano abbassati. L'odore del Cabrales era uscito.</p>
+    </div>
+    <div class="pn r">52</div>
+  </div>
+
+  <div class="pg top">
+    <div class="rh"><span>Tre Uomini e un Cabrales</span><span>VII · Il Cabrales</span></div>
+    <div class="narr" style="margin-top:0;">
+      <p>L'agente della Guardia Civil aveva guardato Norman. Occhiali da sole. Otto di mattina. Pioggia. Odore inspiegabile.</p>
+    </div>
+    <div class="dlg">
+      <p><span class="sp">Agente</span> ¿Ha bebido?</p>
+      <p><span class="sp">Norman</span> No, guardi, mi sono appena svegliato.</p>
+    </div>
+    <div class="narr">
+      <p>L'agente aveva guardato Friki. Friki aveva guardato il soffitto. Norman era stato invitato ad accostare.</p>
+      <p>Juan, nel momento cruciale, aveva già tirato fuori il telefono. La foto esiste. Ritrae Norman seduto nel retro della camionetta, aria da saggio intatta, che spiega qualcosa in spagnolo a due agenti sempre più perplessi. Perché in spagnolo non è mai stato chiarito.</p>
+    </div>
+    <div class="dlg">
+      <p><span class="sp">Juan</span> Quella foto.</p>
+      <p><span class="sp">Norman</span> Non esiste nessuna foto.</p>
+      <p><span class="sp">Juan</span> Norman, stavi parlando in spagnolo.</p>
+      <p><span class="sp">Norman</span> Mi ero confuso.</p>
+      <p><span class="sp">Friki</span> Con la Guardia Civil spagnola.</p>
+      <p><span class="sp">Norman</span> Juan. Oggi ti sposi. Pensa a cose belle.</p>
+    </div>
+    <div class="pn l">53</div>
+  </div>
+
+  <div class="pg photo">
+    <img src="foto-policia.jpeg" style="position:absolute;top:0;left:0;width:100%;height:100%;object-fit:cover;object-position:center center;">
+    <div class="pn r">54</div>
+  </div>
+
+  <!-- ══════════════════════════════ CAP 8 ══════════════════════════════ -->
+  <div class="pg cream bottom">
+    <div class="ch-eyebrow">Capitolo VIII &nbsp;·&nbsp; Parigi &nbsp;·&nbsp; Ore 15:40</div>
+    <div class="ch-title">Honey,<br>Djoon!</div>
+    <div class="ch-deck">"Una breve tappa. Giusto per sentire come suona."</div>
+  </div>
+
+  <div class="pg top">
+    <div class="rh"><span>Tre Uomini e un Cabrales</span><span>VIII · Honey, Djoon!</span></div>
+    <div class="narr" style="margin-top:0;">
+      <p>Friki aveva detto <em>breve tappa</em>. Nessuno dei tre aveva chiesto quanto breve.</p>
+      <p>Il Djoon era un club. Parigi, Quai de la Gare. Di pomeriggio sembrava una sala prove: poca luce, odore di incenso e di anni passati dentro, il DJ già al lavoro come se fosse mezzanotte.</p>
+      <p>Erano entrati alle tre e mezza.</p>
+    </div>
+    <div class="dlg">
+      <p><span class="sp">Friki</span> Un'ora. Giusto per sentire l'atmosfera.</p>
+      <p><span class="sp">Norman</span> Certo.</p>
+      <p><span class="sp">Juan</span> Sì.</p>
+    </div>
+    <div class="narr">
+      <p>Erano usciti a notte fonda.</p>
+      <p>Nessuno aveva guardato l'orologio. Non per distrazione per scelta. Dentro, tutto il locale ballava esattamente nello stesso momento, come in una scena di quei film americani dove la danza è sempre troppo perfetta per essere vera. Qui era vera.</p>
+      <p>Erano tornati il secondo giorno. Poi il terzo.</p>
+    </div>
+    <div class="pn l">55</div>
+  </div>
+
+  <div class="pg photo">
+    <img src="foto-djoon.jpeg" style="position:absolute;top:0;left:0;width:100%;height:100%;object-fit:cover;object-position:center center;">
+    <div class="pn r">56</div>
+  </div>
+
+  <!-- ══════════════════════════════ TRANSIZIONE ══════════════════════════════ -->
+  <div class="pg top">
+    <div class="rh"><span>Tre Uomini e un Cabrales</span><span>Verso la Toscana</span></div>
+    <div class="narr" style="margin-top:0;">
+      <p>Senza discuterne. Senza che nessuno lo proponesse. Erano tornati e basta.</p>
+    </div>
+    <div class="dlg" style="margin-top:14px;">
+      <p><span class="sp">Norman</span> Quindi questa era la breve tappa.</p>
+      <p><span class="sp">Friki</span> È stato breve. Tre giorni è breve.</p>
+      <p><span class="sp">Juan</span> <em>(annuisce)</em></p>
+    </div>
+    <div class="narr" style="margin-top:14px;">
+      <p>Erano di nuovo in macchina. Direzione Toscana. Il Cabrales nel bagagliaio, la Guardia Civil spagnola alle spalle, il navigatore che per una volta sapeva dove stava andando.</p>
+      <p>Juan aveva messo un disco. Qualcosa di lento.</p>
+      <p>Norman guidava. Friki dormiva.</p>
+      <p>Dopo un po' Juan aveva detto una cosa sola.</p>
+    </div>
+    <div class="dlg">
+      <p><span class="sp">Juan</span> Sapete che ho capito una cosa.</p>
+      <p><span class="sp">Norman</span> Cosa.</p>
+      <p><span class="sp">Juan</span> Niente. Guidate.</p>
+    </div>
+    <div class="pn l">57</div>
+  </div>
+
+
+  <!-- ══════════════════════════════ ARRIVO TOSCANA ══════════════════════════════ -->
+  <div class="pg top">
+    <div class="rh"><span>Tre Uomini e un Cabrales</span><span>Toscana · Finalmente</span></div>
+    <div class="narr" style="margin-top:10%;">
+      <p>Sette giorni. Per quattro ore di strada. Con un Cabrales nel bagagliaio.</p>
+      <p>Norman aveva parcheggiato. Erano fermi nel parcheggio davanti alla chiesa. La cosa era lì il matrimonio, dentro, tra pochi minuti.</p>
+    </div>
+    <div class="dlg">
+      <p><span class="sp">Norman</span> Devo andare in bagno.</p>
+      <p><span class="sp">Friki</span> Anch'io.</p>
+      <p><span class="sp">Juan</span> Sul serio.</p>
+      <p><span class="sp">Norman</span> È l'emozione.</p>
+    </div>
+    <div class="narr">
+      <p>Cinque minuti dopo erano tornati. Il lunotto posteriore della macchina non c'era più. Qualcuno lo aveva sfondato. La targa diceva Correggio non era bastato a fermare nessuno.</p>
+      <p>Norman aveva guardato il buco. Aveva annuito, come chi accetta quello che non può cambiare.</p>
+    </div>
+    <div class="dlg">
+      <p><span class="sp">Norman</span> Andiamo.</p>
+    </div>
+    <div class="pn r">58</div>
+  </div>
+
+  <div class="pg photo">
+    <img src="foto-vetro.jpeg" style="position:absolute;top:0;left:0;width:100%;height:100%;object-fit:cover;object-position:center 40%;">
+    <div class="pn l">59</div>
+  </div>
+
+  <div class="pg top">
+    <div class="rh"><span>Tre Uomini e un Cabrales</span><span>Toscana · Finalmente</span></div>
+    <div class="narr" style="margin-top:10%;">
+      <p>Juan si era fermato davanti alla chiesa. Norman e Friki si erano fermati con lui.</p>
+    </div>
+    <div class="dlg">
+      <p><span class="sp">Juan</span> Okay.</p>
+      <p><span class="sp">Norman</span> Okay.</p>
+    </div>
+    <div class="narr">
+      <p>Friki stava guardando una trattoria. Norman lo aveva guardato.</p>
+    </div>
+    <div class="dlg">
+      <p><span class="sp">Friki</span> Dopo. Giuro.</p>
+    </div>
+    <div class="narr">
+      <p>Juan li aveva guardati entrambi. I suoi testimoni. Da quando aveva diciassette anni. Aveva annuito. Era entrato.</p>
+    </div>
+    <div class="pn r">60</div>
+  </div>
+
+  <!-- ══════════════════════════════ IL FILO ══════════════════════════════ -->
+  <div class="pg center">
+    <div class="narr" style="text-align:center;color:var(--text);line-height:2.2;margin-bottom:28px;font-size:clamp(11px,2.1vw,14px);">
+      <p>Autogrill. Ristoranti. Agriturismo.<br>Cialda. Festival. Grotte asturiane.</p>
+      <p style="margin-top:0.7em;">Anni a cercare le cose autentiche.<br>I posti giusti, la musica giusta, il formaggio giusto.</p>
+    </div>
+    <div class="pull" style="text-align:center;color:var(--text);">La cosa più rara<br>non stava in<br>nessuna grotta.</div>
+    <div class="narr" style="text-align:center;color:var(--text);margin-top:28px;">
+      <p>Era nella stessa classe di Norman al liceo.<br>Nutriva verso di lui una diffidenza silenziosa, ma giustificata.<br>Si chiamava Ludovica.</p>
+    </div>
+    <div class="pn l">61</div>
+  </div>
+
+  <!-- ══════════════════════════════ L'ALTARE ══════════════════════════════ -->
+  <div class="pg photo">
+    <img src="foto-toscana.jpeg" style="position:absolute;top:0;left:0;width:100%;height:100%;object-fit:cover;object-position:center 25%;">
+    <div class="pn r">62</div>
+  </div>
+
+  <div class="pg top">
+    <div class="rh"><span>Tre Uomini e un Cabrales</span><span>L'altare</span></div>
+    <div class="narr" style="margin-top:10%;">
+      <p>Juan guarda Ludovica avanzare verso di lui.</p>
+      <p>Pensa ai sette giorni. Alle notti, alle deviazioni impossibili, ai posti che non avrebbero trovato senza Friki. Alle serate che non sarebbero finite così senza Norman.</p>
+      <p>Li vede in prima fila.<br>Sono lì da quando aveva dodici anni.</p>
+      <p>Pensa ad Amsterdam. A quel pomeriggio nel parco, al sole che entrava storto. A quella frase che era uscita senza pensarci, come le cose vere.</p>
+      <p>Ludovica è davanti a lui.</p>
+      <p>Juan sorride.<br>Non riesce a smettere.</p>
+    </div>
+    <div class="pn l">63</div>
+  </div>
+
+  <div class="pg dark center">
+    <div class="bq">"Ora sto bene.<br>Prima no."</div>
+    <div class="pn r">64</div>
+  </div>
+
+
+  <div class="pg photo">
+    <img src="foto-tre-amici.jpeg" style="position:absolute;top:0;left:0;width:100%;height:100%;object-fit:cover;object-position:center 30%;">
+    <div class="pn l">65</div>
+  </div>
+
+  <!-- ══════════════════════════════ FINALE ══════════════════════════════ -->
+  <div class="pg center">
+    <div class="emot">
+      <p>Siamo arrivati in ritardo.<br>Con un vetro rotto.<br>Con un Cabrales nel bagagliaio<br>che si sentiva da tre file di macchine.</p>
+      <p style="margin-top:1.2em;">Non poteva andare diversamente.</p>
+      <p style="margin-top:1.2em;">Abbiamo cercato le cose giuste in posti lontani.<br>Le abbiamo trovate sempre negli stessi tre posti:<br>una macchina, una stanza, un prato.</p>
+      <p style="margin-top:1.2em;">Adesso sei sposato.<br>Il capitolo migliore deve ancora iniziare.</p>
+      <p style="margin-top:1.2em;">E quando gli ultimi invitati scartarono il loro pezzo di Cabrales, nessuno seppe mai quanto fosse costato davvero arrivare fin lì.</p>
+    </div>
+    <div class="pn r">66</div>
+  </div>
+
+  <!-- ══════════════════════════════ DEDICA ══════════════════════════════ -->
+  <div class="pg center">
+    <div class="sh" style="margin-bottom:24px;">Juan &amp; Ludovica · 2026</div>
+    <div class="ch-title" style="text-align:center;font-size:clamp(28px,6vw,50px);line-height:1.05;">Hai trovato<br>la cosa più rara.</div>
+    <div class="rule" style="margin:20px auto;"></div>
+    <div class="narr" style="text-align:center;font-style:italic;color:var(--muted);font-size:clamp(11px,2.1vw,14px);">
+      <p>Con tutto l'amore di chi ha guidato sette giorni<br>con un Cabrales nel bagagliaio e lo rifaremmo.</p>
+      <p style="margin-top:1.4em;font-family:'EB Garamond',serif;font-size:0.8em;letter-spacing:0.22em;font-style:normal;color:var(--muted);">NORMAN &amp; FRIKI</p>
+    </div>
+  </div>
+
+
+  <!-- pagina bianca prima del retro -->
+  <div class="pg" style="background:#FFFFFF;"></div>
+
+  <!-- ══════════════════════════════ RETROCOPERTINA ══════════════════════════════ -->
+  <div class="pg cover" style="background:#FFFFFF;">
+    <div class="cov-bar" style="left:auto;right:0;background:#F5A623;"></div>
+    <div class="cov-top">
+      <div class="cov-cast" style="color:#AAAAAA;">Norman &nbsp;·&nbsp; Friki &nbsp;·&nbsp; Juan</div>
+      <div class="cov-year" style="color:#CCCCCC;">2026</div>
+    </div>
+    <div class="cov-inner" style="justify-content:flex-start;padding-top:18%;">
+      <div style="font-family:'EB Garamond',serif;font-size:clamp(11px,2.1vw,14px);line-height:1.9;color:var(--text);">
+        <p>Tre amici. Un Cabrales delle Asturie scelto come bomboniera per duecento invitati. Sette giorni per attraversare mezza Europa e arrivare in tempo a un matrimonio in Toscana.</p>
+        <p style="margin-top:0.9em;font-style:italic;color:#F5A623;">Cosa poteva andare storto? Quasi tutto.</p>
+        <p style="margin-top:0.9em;">Questa è la vera storia (giurato) di come Juan, Norman e Friki non sono riusciti a fare il tragitto più semplice del mondo — tra un Autogrill fuori controllo, un matrimonio sconosciuto in Germania, ventidue ore di Flixbus per la Scozia e un club di Parigi dove <em>"un'ora"</em> è durata tre giorni.</p>
+        <p style="margin-top:0.9em;">Alla fine sono arrivati. In ritardo, con un vetro rotto e un Cabrales che la Guardia Civil non dimenticherà tanto facilmente.</p>
+        <p style="margin-top:0.9em;font-style:italic;">Perché in fondo, l'unica cosa più rara di duecento porzioni di Cabrales... è un'amicizia come la loro.</p>
+      </div>
+      <div class="cov-rule" style="margin-top:20px;"></div>
+      <div class="cov-cast" style="color:#AAAAAA;">Riccardo Orlandi &nbsp;·&nbsp; Andrea Iori</div>
+    </div>
+  </div>
+
+</div>
+</body>
+</html>
